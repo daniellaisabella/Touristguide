@@ -45,7 +45,7 @@ public class TouristController {
         if (touristAttraction==null){
             throw new IllegalArgumentException("Ugyldig attraktion");
         }
-        model.addAttribute("addAttraction",touristAttraction);
+        model.addAttribute("editAttraction",touristAttraction);
         model.addAttribute("cities", City.values());
         model.addAttribute("tags", Tag.values());
         return "attraction-form";

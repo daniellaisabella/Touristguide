@@ -14,7 +14,7 @@
                 role="form"
                 method="post"
                 th:action="@{/update}"
-                th:object="${}"
+                th:object="${editAttraction}"
         >
             <label for="city">Vælg by</label>
             <select id="city" th:field="*{city}">
