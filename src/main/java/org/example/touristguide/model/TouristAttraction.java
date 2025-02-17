@@ -1,13 +1,19 @@
 package org.example.touristguide.model;
 
+import java.util.List;
+
 public class TouristAttraction {
 
     private String name;
     private String description;
+    private City city;
+    private List<Tags> tags;
 
-    public TouristAttraction(String name, String description) {
+    public TouristAttraction(String name, String description, City city, List<Tags> tags) {
         this.name = name;
         this.description = description;
+        this.city = city;
+        this.tags = tags;
     }
 
     public TouristAttraction() {
@@ -28,5 +34,21 @@ public class TouristAttraction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
     }
 }
