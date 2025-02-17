@@ -9,7 +9,7 @@
 <body>
 <div align="center">
     <div style="border-style:solid; width:500px">
-        <h1>Tilføj Turistattraktion</h1>
+        <h1>Opdater Turistattraktion</h1>
         <form
                 role="form"
                 method="post"
@@ -26,7 +26,7 @@
                 <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag.displayName}">Tag</option>
             </select>
             <br/>
-            <button type="submit">Tilføj Attraktion</button>
+            <button type="submit">Opdater</button>
             <br/>
         </form>
     </div>
