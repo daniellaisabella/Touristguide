@@ -17,9 +17,15 @@
     <tr th:each="attraction : ${attractions}">
         <td th:text="${attraction.getName()}"></td>
         <td th:text="${attraction.getDescription()}"></td>
-        <td th:href="${attraction.getTags()}"></td>
+        <td>
+            <a th:href="@{/attractions/tags/{name}(name=${attraction.getName()})}">
+                <button type="button">Tags</button>
+            </a>
+        </td>
     </tr>
 </table>
+
+<button type="submit">Tilføj attraktion</button>
 
 </body>
 </html>

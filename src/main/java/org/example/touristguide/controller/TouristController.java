@@ -26,6 +26,13 @@ public class TouristController {
         return "attraction-list"; //Display attraction list
     }
 
+    @GetMapping("/tags/{name}")
+    public String showTags(@PathVariable String name, Model model) {
+        TouristAttraction attraction = touristService.getAttractionByName(name);
+        model.addAttribute("attraction", attraction);
+        return "tags";
+    }
+
     @GetMapping("/{name}")
     public ResponseEntity<TouristAttraction> getAttractionsByName(@PathVariable String name) {
         TouristAttraction attraction = touristService.getAttractionByName(name);
@@ -49,6 +56,5 @@ public class TouristController {
         TouristAttraction deleteAttraction = touristService.deleteAttraction(name);
         return new ResponseEntity<>(deleteAttraction, HttpStatus.OK);
     }
-
 
 }
