@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div align="center">
+    <div style="border-style:solid; width:500px">
+        <h1>Tilføj Turistattraktion</h1>
+        <form
+                role="form"
+                method="post"
+                th:action="@{/add/save}"
+                th:object="${addAttraction}"
+        >
+            <label for="byType">Vælg by</label>
+            <select id="byType" name="byType" th:field="*{}">
+                <option th:each="type : ${coffeeTypes}" th:value="${type}" th:text="${type.displayName}">Coffee Type</option>
+            </select>
+
+
+            <br/>
+            <button type="submit">Tilføj Attraktion</button>
+            <br/>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>
