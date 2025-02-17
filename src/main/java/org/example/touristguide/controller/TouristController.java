@@ -21,9 +21,9 @@ public class TouristController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<TouristAttraction>> getAttractions() {
-        List<TouristAttraction> attractions = touristService.getAttractions();
-        return new ResponseEntity<>(attractions, HttpStatus.OK);
+    public String getAttractions(Model model) {
+        model.addAttribute("attractions", touristService.getAttractions()); //Fetch all attractions
+        return "attraction-list"; //Display attraction list
     }
 
     @GetMapping("/{name}")
