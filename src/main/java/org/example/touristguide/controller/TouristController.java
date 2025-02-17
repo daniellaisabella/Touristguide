@@ -3,6 +3,7 @@ package org.example.touristguide.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.example.touristguide.model.TouristAttraction;
 import org.example.touristguide.service.TouristService;
@@ -31,10 +32,17 @@ public class TouristController {
         return new ResponseEntity<>(attraction, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<TouristAttraction> addAttraction(@RequestBody TouristAttraction attraction){
-        TouristAttraction newAttraction = touristService.addAttraction(attraction);
-        return new ResponseEntity<>(newAttraction, HttpStatus.CREATED);
+    @GetMapping("/add")
+    public String addAttraction(Model model){
+        TouristAttraction touristAttraction = new TouristAttraction();
+        model.addAttribute("add",model);
+        return "add";
+    }
+
+    @PostMapping("/add/save")
+    public String saveAttraction(Model model, @ModelAttribute("add") TouristAttraction touristAttraction){
+        model.addAttribute("addAttraction", touristAttraction);
+        return "succesAdd";
     }
 
     @PostMapping("/update")
