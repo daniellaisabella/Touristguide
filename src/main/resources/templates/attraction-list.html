@@ -6,12 +6,16 @@
 </head>
 <body>
 <h1>Liste Over alle Attraktioner</h1>
-<ul>
-    <li th:each="attraction:${attractions}">
-        <strong th:text="${attraction.getName()}"></strong>
-        <span th:text="${attraction.getDescription()}"></span>
-    </li>
-</ul>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <tr th:each="attraction : ${attractions}">
+        <td th:text="${attraction.getName()}"></td>
+        <td th:text="${attraction.getDescription()}"></td>
+    </tr>
+</table>
 
 </body>
 </html>
