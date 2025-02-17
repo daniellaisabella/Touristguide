@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"><head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link th:href="@{/styles.css}" rel="stylesheet">
 <head>
-    <meta charset="UTF-8">
-    <title>Attraction List</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Attraction List</title>
+    </head>
 <body>
 <h1>Liste Over alle Attraktioner</h1>
 <table>
     <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Tags</th>
     </tr>
     <tr th:each="attraction : ${attractions}">
         <td th:text="${attraction.getName()}"></td>
         <td th:text="${attraction.getDescription()}"></td>
+        <td th:href="${attraction.getTags()}"></td>
     </tr>
 </table>
 
