@@ -1,6 +1,6 @@
 package org.example.touristguide.model;
 
-public enum Tags {
+public enum Tag {
     RESTAURANT("Restaurant"),
     FORLYSTELSESPARK("Forlystelsespark"),
     NATUROPLEVELSE("Naturoplevelse"),
@@ -13,7 +13,7 @@ public enum Tags {
 
     private String displayName;
 
-    Tags(String displayName){
+    Tag(String displayName){
         this.displayName = displayName;
     }
 

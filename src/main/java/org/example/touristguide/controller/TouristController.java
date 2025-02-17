@@ -1,7 +1,7 @@
 package org.example.touristguide.controller;
 
 import org.example.touristguide.model.City;
-import org.example.touristguide.model.Tags;
+import org.example.touristguide.model.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.example.touristguide.model.TouristAttraction;
 import org.example.touristguide.service.TouristService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/attractions")
@@ -22,7 +20,7 @@ public class TouristController {
         this.touristService = touristService;
     }
 
-    @GetMapping("")
+    @GetMapping("/attraction-list")
     public String getAttractions(Model model) {
         model.addAttribute("attractions", touristService.getAttractions()); //Fetch all attractions
         return "attraction-list"; //Display attraction list
@@ -34,25 +32,22 @@ public class TouristController {
         return new ResponseEntity<>(attraction, HttpStatus.OK);
     }
 
-    @GetMapping("/add")
-    public String addAttraction(Model model){
-        TouristAttraction touristAttraction = new TouristAttraction();
-        model.addAttribute("addAttraction",model);
+    @GetMapping("/{name}/edit")
+    public String editAttraction(@PathVariable String name, Model model){
+        TouristAttraction touristAttraction = touristService.getAttractionByName(name);
+        if (touristAttraction==null){
+            throw new IllegalArgumentException("Ugyldig attraktion");
+        }
+        model.addAttribute("addAttraction",touristAttraction);
         model.addAttribute("cities", City.values());
-        model.addAttribute("tags", Tags.values());
+        model.addAttribute("tags", Tag.values());
         return "attraction-form";
     }
 
-    @PostMapping("/add/save")
-    public String saveAttraction(Model model, @ModelAttribute("add") TouristAttraction touristAttraction){
-        model.addAttribute("addAttraction", touristAttraction);
-        return "succesAdd";
-    }
-
     @PostMapping("/update")
-    public ResponseEntity<TouristAttraction> updateAttraction(@RequestBody TouristAttraction attraction) {
-        TouristAttraction updateAttraction = touristService.updateAttraction(attraction);
-        return new ResponseEntity<>(updateAttraction, HttpStatus.OK);
+    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
+        touristService.updateAttraction(touristAttraction);
+        return "redirect:/attraction-list";
     }
 
     @PostMapping("/delete/{name}")

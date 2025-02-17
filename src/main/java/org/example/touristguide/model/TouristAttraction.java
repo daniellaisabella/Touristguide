@@ -7,13 +7,13 @@ public class TouristAttraction {
     private String name;
     private String description;
     private City city;
-    private List<Tags> tags;
+    private List<Tag> tagList;
 
-    public TouristAttraction(String name, String description, City city, List<Tags> tags) {
+    public TouristAttraction(String name, String description, City city, List<Tag> tagList) {
         this.name = name;
         this.description = description;
         this.city = city;
-        this.tags = tags;
+        this.tagList = tagList;
     }
 
     public TouristAttraction() {
@@ -44,11 +44,11 @@ public class TouristAttraction {
         this.city = city;
     }
 
-    public List<Tags> getTags() {
-        return tags;
+    public List<Tag> getTagList() {
+        return tagList;
     }
 
-    public void setTags(List<Tags> tags) {
-        this.tags = tags;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
     }
 }

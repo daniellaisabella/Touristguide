@@ -1,7 +1,7 @@
 package org.example.touristguide.repository;
 
 import org.example.touristguide.model.City;
-import org.example.touristguide.model.Tags;
+import org.example.touristguide.model.Tag;
 import org.springframework.stereotype.Repository;
 import org.example.touristguide.model.TouristAttraction;
 
@@ -23,52 +23,52 @@ public class TouristRepository {
         attractions.add(new TouristAttraction("Tivoli",
                 "En historisk forlystelsespark i hjertet af København.",
                 City.KØBENHAVN,
-                Arrays.asList(Tags.FORLYSTELSESPARK, Tags.RESTAURANT)));
+                Arrays.asList(Tag.FORLYSTELSESPARK, Tag.RESTAURANT)));
 
         attractions.add(new TouristAttraction("Den Lille Havfrue",
                 "En berømt bronzestatue inspireret af H.C. Andersens eventyr.",
                 City.KØBENHAVN,
-                Arrays.asList(Tags.ARKITEKTUR, Tags.HISTORIE)));
+                Arrays.asList(Tag.ARKITEKTUR, Tag.HISTORIE)));
 
         attractions.add(new TouristAttraction("Legoland Billund",
                 "En familievenlig forlystelsespark bygget af LEGO-klodser.",
                 City.BILLUND,
-                Arrays.asList(Tags.FORLYSTELSESPARK)));
+                Arrays.asList(Tag.FORLYSTELSESPARK)));
 
         attractions.add(new TouristAttraction("Nyhavn",
                 "Et ikonisk havnekvarter med farverige bygninger og livlige caféer.",
                 City.KØBENHAVN,
-                Arrays.asList(Tags.RESTAURANT, Tags.ARKITEKTUR)));
+                Arrays.asList(Tag.RESTAURANT, Tag.ARKITEKTUR)));
 
         attractions.add(new TouristAttraction("Kronborg Slot",
                 "Shakespeares berømte Hamlet-slot, fyldt med historie og kultur.",
                 City.HELSINGØR,
-                Arrays.asList(Tags.HISTORIE, Tags.ARKITEKTUR, Tags.MUSEUM)));
+                Arrays.asList(Tag.HISTORIE, Tag.ARKITEKTUR, Tag.MUSEUM)));
 
         attractions.add(new TouristAttraction("Møns Klint",
                 "Storslåede hvide kridtklinter med fantastisk udsigt over havet.",
                 City.MØN,
-                Arrays.asList(Tags.NATUROPLEVELSE, Tags.LANDSKAB, Tags.UDSIGTSPUNKT)));
+                Arrays.asList(Tag.NATUROPLEVELSE, Tag.LANDSKAB, Tag.UDSIGTSPUNKT)));
 
         attractions.add(new TouristAttraction("Rundetårn",
                 "Et gammelt observatorium med en unik spiralrampe og flot udsigt.",
                 City.KØBENHAVN,
-                Arrays.asList(Tags.UDSIGTSPUNKT, Tags.HISTORIE, Tags.ARKITEKTUR)));
+                Arrays.asList(Tag.UDSIGTSPUNKT, Tag.HISTORIE, Tag.ARKITEKTUR)));
 
         attractions.add(new TouristAttraction("ARoS Aarhus Kunstmuseum",
                 "Et moderne kunstmuseum kendt for sin regnbuepanorama.",
                 City.AARHUS,
-                Arrays.asList(Tags.KUNST, Tags.MUSEUM)));
+                Arrays.asList(Tag.KUNST, Tag.MUSEUM)));
 
         attractions.add(new TouristAttraction("Ribe Domkirke",
                 "Danmarks ældste domkirke i en charmerende middelalderby.",
                 City.RIBE,
-                Arrays.asList(Tags.HISTORIE, Tags.ARKITEKTUR, Tags.UDSIGTSPUNKT)));
+                Arrays.asList(Tag.HISTORIE, Tag.ARKITEKTUR, Tag.UDSIGTSPUNKT)));
 
         attractions.add(new TouristAttraction("Nationalmuseet",
                 "Danmarks største kulturhistoriske museum med unikke udstillinger.",
                 City.KØBENHAVN,
-                Arrays.asList(Tags.HISTORIE, Tags.MUSEUM)));
+                Arrays.asList(Tag.HISTORIE, Tag.MUSEUM)));
     }
 
     public List<TouristAttraction> getAttractions() {

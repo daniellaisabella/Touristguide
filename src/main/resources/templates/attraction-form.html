@@ -13,19 +13,18 @@
         <form
                 role="form"
                 method="post"
-                th:action="@{/add/save}"
-                th:object="${addAttraction}"
+                th:action="@{/update}"
+                th:object="${}"
         >
-            <label for="name" >Skriv navn</label>
-            <input id="name" type="text">
-
-
             <label for="city">Vælg by</label>
-            <select id="city" name="byType" th:field="*{c}">
-                <option th:each="type : ${cities}" th:value="${type}" th:text="${type.displayName}">Coffee Type</option>
+            <select id="city" th:field="*{city}">
+                <option th:each="city : ${cities}" th:value="${city}" th:text="${city.displayName}">By</option>
             </select>
-
-
+            <br/>
+            <label for="tags">Vælg tags</label>
+            <select id="tags" th:field="*{tagList}">
+                <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag.displayName}">Tag</option>
+            </select>
             <br/>
             <button type="submit">Tilføj Attraktion</button>
             <br/>
