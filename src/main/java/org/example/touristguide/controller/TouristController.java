@@ -3,6 +3,7 @@ package org.example.touristguide.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.example.touristguide.model.TouristAttraction;
 import org.example.touristguide.service.TouristService;
@@ -20,9 +21,9 @@ public class TouristController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<TouristAttraction>> getAttractions() {
-        List<TouristAttraction> attractions = touristService.getAttractions();
-        return new ResponseEntity<>(attractions, HttpStatus.OK);
+    public String getAttractions(Model model) {
+        model.addAttribute("attractions", touristService.getAttractions()); //Fetch all attractions
+        return "attraction-list"; //Display attraction list
     }
 
     @GetMapping("/{name}")
