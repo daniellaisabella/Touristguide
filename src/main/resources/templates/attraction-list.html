@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"><head>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Attraction List</title>
 </head>
 <body>
+<h1>Liste Over alle Attraktioner</h1>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <tr th:each="attraction : ${attractions}">
+        <td th:text="${attraction.getName()}"></td>
+        <td th:text="${attraction.getDescription()}"></td>
+    </tr>
+</table>
 
 </body>
 </html>
