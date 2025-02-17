@@ -9,13 +9,14 @@
 <body>
 <div align="center">
     <div style="border-style:solid; width:500px">
-        <h1>Opdater Turistattraktion</h1>
+        <h1>Opdater <span th:text="*{name}"></span></h1>
         <form
                 role="form"
                 method="post"
                 th:action="@{/update}"
                 th:object="${editAttraction}"
         >
+
             <label for="city">Vælg by</label>
             <select id="city" th:field="*{city}">
                 <option th:each="city : ${cities}" th:value="${city}" th:text="${city.displayName}">By</option>

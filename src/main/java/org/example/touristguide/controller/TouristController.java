@@ -20,7 +20,7 @@ public class TouristController {
         this.touristService = touristService;
     }
 
-    @GetMapping("/attraction-list")
+    @GetMapping("")
     public String getAttractions(Model model) {
         model.addAttribute("attractions", touristService.getAttractions()); //Fetch all attractions
         return "attraction-list"; //Display attraction list
@@ -39,7 +39,7 @@ public class TouristController {
         return new ResponseEntity<>(attraction, HttpStatus.OK);
     }
 
-    @GetMapping("/{name}/edit")
+    @GetMapping("/edit/{name}")
     public String editAttraction(@PathVariable String name, Model model){
         TouristAttraction touristAttraction = touristService.getAttractionByName(name);
         if (touristAttraction==null){
