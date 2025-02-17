@@ -1,5 +1,7 @@
 package org.example.touristguide.controller;
 
+import org.example.touristguide.model.City;
+import org.example.touristguide.model.Tags;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,8 @@ public class TouristController {
     public String addAttraction(Model model){
         TouristAttraction touristAttraction = new TouristAttraction();
         model.addAttribute("addAttraction",model);
+        model.addAttribute("cities", City.values());
+        model.addAttribute("tags", Tags.values());
         return "attraction-form";
     }
 
