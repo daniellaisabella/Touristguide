@@ -15,10 +15,10 @@
         <th>Tags</th>
     </tr>
     <tr th:each="attraction : ${attractions}">
-        <td th:text="${attraction.getName()}"></td>
-        <td th:text="${attraction.getDescription()}"></td>
+        <td th:text="${attraction.name}"></td>
+        <td th:text="${attraction.description}"></td>
         <td>
-            <a th:href="@{/attractions/tags/{name}(name=${attraction.getName()})}">
+            <a th:href="@{/attractions/tags/{name}(name=${attraction.name})}">
                 <button type="button">Tags</button>
             </a>
         </td>

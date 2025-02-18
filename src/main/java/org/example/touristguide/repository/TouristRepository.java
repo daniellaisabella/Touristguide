@@ -90,13 +90,12 @@ public class TouristRepository {
         return newAttraction;
     }
 
-    public TouristAttraction updateAttraction(TouristAttraction updatedAttraction) {
+    public void updateAttraction(TouristAttraction updatedAttraction) {
         for (int i = 0; i < attractions.size(); i++) {
             if (updatedAttraction.getName().equals(attractions.get(i).getName())) {
                 attractions.set(i, updatedAttraction);
             }
         }
-        return updatedAttraction;
     }
 
     public TouristAttraction deleteAttraction(String name) {

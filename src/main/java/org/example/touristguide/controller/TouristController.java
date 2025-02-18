@@ -51,10 +51,11 @@ public class TouristController {
         return "attraction-form";
     }
 
-    @PostMapping("/update")
-    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
+    @PostMapping("/edit/{name}/update")
+    public String updateAttraction(Model model, @ModelAttribute TouristAttraction touristAttraction){
         touristService.updateAttraction(touristAttraction);
-        return "redirect:/attraction-list";
+        model.addAttribute("updatedAttraction",touristAttraction);
+        return "updateSuccessful";
     }
 
     @PostMapping("/delete/{name}")

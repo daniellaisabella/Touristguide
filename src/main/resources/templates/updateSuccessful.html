@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div align="center">
+  <div style="border-style:solid; width:500px">
+    <h1>Opdateret information</h1>
+    <br/>
+    <p>Navn: </p> <strong th:text="${updatedAttraction.name}"/>
+    <br/>
+    <p>Beskrivelse: </p> <strong th:text="${updatedAttraction.description}"/>
+    <br/>
+    <p>By: </p> <strong th:text="${updatedAttraction.city}"/>
+    <br/>
+    <p>Tags: </p> <strong th:text="${updatedAttraction.tagList}"/>
+    <br/>
+    <a th:href="@{/attractions}">
+      <button type="button">Tilbage</button>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

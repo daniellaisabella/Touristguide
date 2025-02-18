@@ -26,8 +26,8 @@ public class TouristService {
         return touristRepository.addAttraction(attraction);
     }
 
-    public TouristAttraction updateAttraction (TouristAttraction attraction){
-        return touristRepository.updateAttraction(attraction);
+    public void updateAttraction (TouristAttraction attraction){
+        touristRepository.updateAttraction(attraction);
     }
 
     public TouristAttraction deleteAttraction (String name) {
