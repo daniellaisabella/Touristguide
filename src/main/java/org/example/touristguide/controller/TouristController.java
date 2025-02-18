@@ -39,7 +39,7 @@ public class TouristController {
         return new ResponseEntity<>(attraction, HttpStatus.OK);
     }
 
-    @GetMapping("/edit/{name}")
+    @GetMapping("/{name}/edit")
     public String editAttraction(@PathVariable String name, Model model){
         TouristAttraction touristAttraction = touristService.getAttractionByName(name);
         if (touristAttraction==null){
@@ -51,7 +51,7 @@ public class TouristController {
         return "attraction-form";
     }
 
-    @PostMapping("/edit/{name}/update")
+    @PostMapping("/update")
     public String updateAttraction(Model model, @ModelAttribute TouristAttraction touristAttraction){
         touristService.updateAttraction(touristAttraction);
         model.addAttribute("updatedAttraction",touristAttraction);
