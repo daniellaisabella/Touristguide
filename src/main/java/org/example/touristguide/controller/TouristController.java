@@ -26,7 +26,7 @@ public class TouristController {
         return "attraction-list"; //Display attraction list
     }
 
-    @GetMapping("/tags/{name}")
+    @GetMapping("/{name}/tags")
     public String showTags(@PathVariable String name, Model model) {
         TouristAttraction attraction = touristService.getAttractionByName(name);
         model.addAttribute("attraction", attraction);
