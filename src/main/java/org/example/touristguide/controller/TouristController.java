@@ -33,6 +33,16 @@ public class TouristController {
         return "tags";
     }
 
+    @GetMapping("/add")
+    public String addAttraction (Model model) {
+        TouristAttraction touristAttraction = new TouristAttraction();
+        model.addAttribute("editAttraction",touristAttraction);
+        model.addAttribute("cities", City.values());
+        model.addAttribute("tags", Tag.values());
+        return "attraction-form";
+    }
+
+
     @GetMapping("/{name}")
     public ResponseEntity<TouristAttraction> getAttractionsByName(@PathVariable String name) {
         TouristAttraction attraction = touristService.getAttractionByName(name);
