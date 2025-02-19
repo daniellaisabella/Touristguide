@@ -11,7 +11,7 @@ public enum Tag {
     UDSIGTSPUNKT("Udsigtspunkt"),
     MUSEUM("Museum");
 
-    private String displayName;
+    private final String displayName;
 
     Tag(String displayName){
         this.displayName = displayName;

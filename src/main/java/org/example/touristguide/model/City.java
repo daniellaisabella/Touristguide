@@ -8,7 +8,7 @@ public enum City {
     AARHUS("Aarhus"),
     RIBE("Ribe");
 
-    private String displayName;
+    private final String displayName;
 
     City(String displayName){
         this.displayName = displayName;
