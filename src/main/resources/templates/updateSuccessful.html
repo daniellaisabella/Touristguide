@@ -9,15 +9,15 @@
 <body>
 <div align="center">
   <div style="border-style:solid; width:500px">
-    <h1>Opdateret information</h1>
+    <h1>Attraktion information</h1>
     <br/>
-    <p>Navn: </p> <strong th:text="${updatedAttraction.name}"/>
+    <p>Navn: <strong th:text="${updatedAttraction.name}"/></p>
     <br/>
-    <p>Beskrivelse: </p> <strong th:text="${updatedAttraction.description}"/>
+    <p>Beskrivelse: <strong th:text="${updatedAttraction.description}"/></p>
     <br/>
-    <p>By: </p> <strong th:text="${updatedAttraction.city}"/>
+    <p>By: <strong th:text="${updatedAttraction.city}"/></p>
     <br/>
-    <p>Tags: </p> <strong th:text="${updatedAttraction.tagList}"/>
+    <p>Tags: <strong th:text="${updatedAttraction.tagList}"/></p>
     <br/>
     <a th:href="@{/attractions}">
       <button type="button">Tilbage</button>

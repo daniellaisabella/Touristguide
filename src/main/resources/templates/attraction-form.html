@@ -9,7 +9,7 @@
 <body>
 <div align="center">
     <div style="border-style:solid; width:500px">
-        <h1>Opdater <span th:text="*{name}"></span></h1>
+        <h1 th:text="${editAttraction.name != null ? 'Opdater ' + name : 'Tilføj Attraktion'}"></h1>
         <form
                 role="form"
                 method="post"
@@ -17,7 +17,8 @@
                 th:object="${editAttraction}"
         >
             <label for="name">Navn</label>
-            <input id="name" type="text" th:field="*{name}" th:value="*{name}" readonly required />
+            <input id="name" type="text" th:field="*{name}" th:value="*{name}"
+                   th:attr="readonly=${editAttraction.name != null ? 'readonly' : null}" required />
             <br/>
 
             <label for="description">Beskrivelse</label>
@@ -32,7 +33,7 @@
             <label>Vælg tags</label>
             <label for="tag"></label><input id="tag" type="checkbox" th:field="*{tagList}" th:each="tag : ${tags}" th:value="${tag}" th:text="${tag.displayName}"/>
             <br/>
-            <button type="submit">Opdater</button>
+            <button type="submit">Færdig</button>
             <br/>
         </form>
     </div>

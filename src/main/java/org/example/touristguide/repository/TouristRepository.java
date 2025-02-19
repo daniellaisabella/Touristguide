@@ -94,9 +94,10 @@ public class TouristRepository {
         for (int i = 0; i < attractions.size(); i++) {
             if (updatedAttraction.getName().equals(attractions.get(i).getName())) {
                 attractions.set(i, updatedAttraction);
-            } else {
-                attractions.add(updatedAttraction);
             }
+        }
+        if (!attractions.contains(updatedAttraction)){
+            attractions.add(updatedAttraction);
         }
     }
 
