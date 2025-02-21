@@ -34,12 +34,17 @@ public class TouristController {
     }
 
     @GetMapping("/add")
-    public String addAttraction (Model model) {
-        TouristAttraction touristAttraction = new TouristAttraction();
-        model.addAttribute("editAttraction",touristAttraction);
+    public String showAddAttractionForm(Model model) {
+        model.addAttribute("touristAttraction", new TouristAttraction());
         model.addAttribute("cities", City.values());
         model.addAttribute("tags", Tag.values());
         return "attraction-form";
+    }
+
+    @PostMapping("/save")
+    public String addAttraction(@ModelAttribute TouristAttraction touristAttraction) {
+        touristService.addAttraction(touristAttraction);
+        return "redirect:/attractions";
     }
 
 
