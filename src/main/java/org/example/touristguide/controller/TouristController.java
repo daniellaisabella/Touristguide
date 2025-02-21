@@ -44,10 +44,12 @@ public class TouristController {
 
 
     @GetMapping("/{name}")
-    public ResponseEntity<TouristAttraction> getAttractionsByName(@PathVariable String name) {
+    public String getAttractionByName(@PathVariable String name, Model model){
         TouristAttraction attraction = touristService.getAttractionByName(name);
-        return new ResponseEntity<>(attraction, HttpStatus.OK);
+        model.addAttribute("updatedAttraction", attraction);
+        return "updateSuccessful";
     }
+
 
     @GetMapping("/{name}/edit")
     public String editAttraction(@PathVariable String name, Model model){
