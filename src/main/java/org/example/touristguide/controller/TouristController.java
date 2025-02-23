@@ -41,7 +41,7 @@ public class TouristController {
     }
 
     @GetMapping("/add")
-    public String showAddAttractionForm(Model model) {
+    public String addAttraction(Model model) {
         model.addAttribute("touristAttraction", new TouristAttraction());
         model.addAttribute("cities", City.values());
         model.addAttribute("tags", Tag.values());
@@ -49,8 +49,8 @@ public class TouristController {
     }
 
     @PostMapping("/save")
-    public String addAttraction(@ModelAttribute TouristAttraction touristAttraction) {
-        touristService.addAttraction(touristAttraction);
+    public String saveAttraction(@ModelAttribute TouristAttraction touristAttraction) {
+        touristService.saveAttraction(touristAttraction);
         return "redirect:/attractions";
     }
 
@@ -60,7 +60,7 @@ public class TouristController {
         if (touristAttraction == null) {
             throw new IllegalArgumentException("Ugyldig attraktion");
         }
-        model.addAttribute("editAttraction", touristAttraction);
+        model.addAttribute("touristAttraction", touristAttraction);
         model.addAttribute("cities", City.values());
         model.addAttribute("tags", Tag.values());
         return "attraction-form";

@@ -1,45 +1,69 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + editAttraction.name : 'Tilføj Attraktion'"></title>
 </head>
 <body>
 <div align="center">
     <div style="border-style:solid; width:500px">
-        <h1 th:text="${editAttraction.name != null ? 'Opdater ' + name : 'Tilføj Attraktion'}"></h1>
+        <h1 th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + editAttraction.name : 'Tilføj Attraktion'"></h1>
+
         <form
                 role="form"
                 method="post"
-                th:action="@{/attractions/update}"
-                th:object="${editAttraction}"
+                th:action="@{${touristAttraction != null and touristAttraction.name != null} ? '/attractions/update' : '/attractions/save'}"
+                th:object="${touristAttraction}"
         >
+            <!-- Name Input -->
             <label for="name">Navn</label>
-            <input id="name" type="text" th:field="*{name}" th:value="*{name}"
-                   th:attr="readonly=${editAttraction.name != null ? 'readonly' : null}" required />
+            <input
+                    id="name"
+                    type="text"
+                    th:field="*{name}"
+                    th:value="${touristAttraction.name}"
+                    th:attr="readonly=${touristAttraction != null and touristAttraction.name != null ? 'readonly' : null}"
+                    required
+            />
             <br/>
 
+            <!-- Description Input -->
             <label for="description">Beskrivelse</label>
-            <textarea id="description" th:field="*{description}" th:value="*{description}" required></textarea>
+            <textarea
+                    id="description"
+                    th:field="*{description}"
+                    required
+            ></textarea>
             <br/>
 
+            <!-- City Dropdown -->
             <label for="city">Vælg by</label>
             <select id="city" th:field="*{city}">
-                <option th:each="city : ${cities}" th:value="${city}" th:text="${city.displayName}">By</option>
+                <option value="">-- Vælg by --</option>
+                <option th:each="city : ${cities}" th:value="${city}" th:text="${city.displayName}"></option>
             </select>
             <br/>
+
+            <!-- Tags Selection -->
             <label>Vælg tags</label>
-            <label for="tag"></label><input id="tag" type="checkbox" th:field="*{tagList}" th:each="tag : ${tags}" th:value="${tag}" th:text="${tag.displayName}"/>
+            <div>
+                <th:block th:each="tag : ${tags}">
+                    <input
+                            type="checkbox"
+                            th:field="*{tagList}"
+                            th:value="${tag}"
+                            id="tag-[[${tag}]]"
+                    />
+                    <label th:for="${'tag-' + tag}" th:text="${tag.displayName}"></label>
+                </th:block>
+            </div>
             <br/>
+
+            <!-- Submit Button -->
             <button type="submit">Færdig</button>
             <br/>
         </form>
     </div>
 </div>
-
-
-
 </body>
 </html>

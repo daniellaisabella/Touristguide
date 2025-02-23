@@ -91,6 +91,10 @@ public class TouristRepository {
         return newAttraction;
     }
 
+    public void saveAttraction (TouristAttraction newAttraction) {
+        attractions.add(newAttraction);
+    }
+
     public void updateAttraction(TouristAttraction updatedAttraction) {
         for (int i = 0; i < attractions.size(); i++) {
             if (updatedAttraction.getName().equals(attractions.get(i).getName())) {

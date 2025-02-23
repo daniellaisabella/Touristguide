@@ -26,6 +26,10 @@ public class TouristService {
         return touristRepository.addAttraction(attraction);
     }
 
+    public void saveAttraction (TouristAttraction attraction) {
+        touristRepository.saveAttraction(attraction);
+    }
+
     public void updateAttraction (TouristAttraction attraction){
         touristRepository.updateAttraction(attraction);
     }
