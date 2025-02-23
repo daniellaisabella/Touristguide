@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Attraction Details</title>
+</head>
+<body>
+
+<h1>Attraction Details</h1>
+
+<div th:if="${attraction}">
+  <p><strong>Name:</strong> <span th:text="${attraction.name}"></span></p>
+  <p><strong>City:</strong> <span th:text="${attraction.city}"></span></p>
+  <p><strong>Description:</strong> <span th:text="${attraction.description}"></span></p>
+
+  <!-- Display Attraction Tags -->
+  <h3>Tags:</h3>
+  <ul>
+    <li th:each="tag : ${attraction.tagList}" th:text="${tag}"></li>
+  </ul>
+
+
+  <img th:src="@{'/images/' + ${#strings.toLowerCase(#strings.replace(attraction.name, ' ', '-'))} + '.jpg'}"
+       th:alt="${attraction.name}"
+       onerror="this.onerror=null; this.src='/images/default.jpg';" />
+
+  <br>
+
+  <!-- Edit Attraction Button -->
+  <a th:href="@{/attractions/{name}/edit(name=${attraction.name})}">
+    <button>Edit</button>
+  </a>
+
+  <!-- Delete Attraction Button with Confirmation -->
+  <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post"
+        onsubmit="return confirm('Are you sure you want to delete this attraction?');">
+    <button type="submit">Delete</button>
+  </form>
+
+  <br>
+
+  <!-- Back to Attractions Button -->
+  <a th:href="@{/attractions}">
+    <button>Back to Attractions</button>
+  </a>
+</div>
+
+<!-- Error Message If No Attraction Found -->
+<div th:unless="${attraction}">
+  <p>Attraction not found.</p>
+  <a th:href="@{/attractions}">
+    <button>Back to Attractions</button>
+  </a>
+</div>
+
+</body>
+</html>
