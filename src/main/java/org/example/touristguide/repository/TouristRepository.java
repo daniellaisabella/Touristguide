@@ -102,9 +102,6 @@ public class TouristRepository {
         }
     }
     public void deleteAttraction(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name cannot be null");
-        }
 
         Iterator<TouristAttraction> iterator = attractions.iterator();
         while (iterator.hasNext()) {
@@ -116,18 +113,6 @@ public class TouristRepository {
         }
     }
 
-//    public void deleteAttraction(String name) {
-//
-//        if (name == null) {
-//            throw new IllegalArgumentException();
-//        }
-//        for (TouristAttraction attraction : attractions) {
-//            if (attraction.getName().equalsIgnoreCase(name)) {
-//                attractions.remove(attraction);
-//
-//            }
-//        }
-//
-//    }
+
 }
 
