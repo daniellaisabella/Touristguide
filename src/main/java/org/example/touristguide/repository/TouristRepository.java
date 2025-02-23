@@ -8,6 +8,7 @@ import org.example.touristguide.model.TouristAttraction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -96,19 +97,37 @@ public class TouristRepository {
                 attractions.set(i, updatedAttraction);
             }
         }
-        if (!attractions.contains(updatedAttraction)){
+        if (!attractions.contains(updatedAttraction)) {
             attractions.add(updatedAttraction);
         }
     }
+    public void deleteAttraction(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
 
-    public TouristAttraction deleteAttraction(String name) {
-        for (TouristAttraction attraction : attractions) {
+        Iterator<TouristAttraction> iterator = attractions.iterator();
+        while (iterator.hasNext()) {
+            TouristAttraction attraction = iterator.next();
             if (attraction.getName().equalsIgnoreCase(name)) {
-                attractions.remove(attraction);
-                return attraction;
+                iterator.remove();
+                return;
             }
         }
-        return null;
     }
+
+//    public void deleteAttraction(String name) {
+//
+//        if (name == null) {
+//            throw new IllegalArgumentException();
+//        }
+//        for (TouristAttraction attraction : attractions) {
+//            if (attraction.getName().equalsIgnoreCase(name)) {
+//                attractions.remove(attraction);
+//
+//            }
+//        }
+//
+//    }
 }
 

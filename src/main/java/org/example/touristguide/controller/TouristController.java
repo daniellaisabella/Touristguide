@@ -49,7 +49,7 @@ public class TouristController {
 
 
     @GetMapping("/{name}")
-    public String getAttractionByName(@PathVariable String name, Model model){
+    public String getAttractionByName(@PathVariable String name, Model model) {
         TouristAttraction attraction = touristService.getAttractionByName(name);
         model.addAttribute("updatedAttraction", attraction);
         return "updateSuccessful";
@@ -57,28 +57,30 @@ public class TouristController {
 
 
     @GetMapping("/{name}/edit")
-    public String editAttraction(@PathVariable String name, Model model){
+    public String editAttraction(@PathVariable String name, Model model) {
         TouristAttraction touristAttraction = touristService.getAttractionByName(name);
-        if (touristAttraction==null){
+        if (touristAttraction == null) {
             throw new IllegalArgumentException("Ugyldig attraktion");
         }
-        model.addAttribute("editAttraction",touristAttraction);
+        model.addAttribute("editAttraction", touristAttraction);
         model.addAttribute("cities", City.values());
         model.addAttribute("tags", Tag.values());
         return "attraction-form";
     }
 
     @PostMapping("/update")
-    public String updateAttraction(Model model, @ModelAttribute TouristAttraction touristAttraction){
+    public String updateAttraction(Model model, @ModelAttribute TouristAttraction touristAttraction) {
         touristService.updateAttraction(touristAttraction);
-        model.addAttribute("updatedAttraction",touristAttraction);
+        model.addAttribute("updatedAttraction", touristAttraction);
         return "updateSuccessful";
     }
 
     @PostMapping("/delete/{name}")
-    public ResponseEntity<TouristAttraction> deleteAttraction(@PathVariable String name) {
-        TouristAttraction deleteAttraction = touristService.deleteAttraction(name);
-        return new ResponseEntity<>(deleteAttraction, HttpStatus.OK);
+    public String deleteAttraction(@PathVariable String name) {
+        touristService.deleteAttraction(name);
+
+        return "redirect:/attractions"; //VIRKER IK ENDNU
     }
+
 
 }

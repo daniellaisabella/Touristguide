@@ -30,8 +30,8 @@ public class TouristService {
         touristRepository.updateAttraction(attraction);
     }
 
-    public TouristAttraction deleteAttraction (String name) {
-        return touristRepository.deleteAttraction(name);
+    public void deleteAttraction (String name) {
+       touristRepository.deleteAttraction(name);
     }
 
 

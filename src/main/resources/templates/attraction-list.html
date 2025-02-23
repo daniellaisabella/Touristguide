@@ -27,6 +27,12 @@
                 <button type="button">Rediger</button>
             </a>
         </td>
+        <td>
+            <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post">
+                <button type="submit">SLET</button>
+            </form>
+        </td>
+
     </tr>
 </table>
 
