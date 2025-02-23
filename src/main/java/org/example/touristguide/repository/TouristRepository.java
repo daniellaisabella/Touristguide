@@ -101,16 +101,17 @@ public class TouristRepository {
             attractions.add(updatedAttraction);
         }
     }
-    public void deleteAttraction(String name) {
+    public TouristAttraction deleteAttraction(String name) {
 
         Iterator<TouristAttraction> iterator = attractions.iterator();
         while (iterator.hasNext()) {
             TouristAttraction attraction = iterator.next();
             if (attraction.getName().equalsIgnoreCase(name)) {
                 iterator.remove();
-                return;
+                return attraction;
             }
         }
+        return null;
     }
 
 

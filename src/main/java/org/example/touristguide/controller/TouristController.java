@@ -23,7 +23,14 @@ public class TouristController {
     @GetMapping("")
     public String getAttractions(Model model) {
         model.addAttribute("attractions", touristService.getAttractions()); //Fetch all attractions
-        return "attraction-list"; //Display attraction list
+        return "attraction-list";
+    }
+
+    @GetMapping("/{name}")
+    public String getAttractionByName(@PathVariable String name, Model model) {
+        TouristAttraction attraction = touristService.getAttractionByName(name);
+        model.addAttribute("attraction", attraction);
+        return "attraction-details";
     }
 
     @GetMapping("/{name}/tags")
@@ -47,15 +54,6 @@ public class TouristController {
         return "redirect:/attractions";
     }
 
-
-    @GetMapping("/{name}")
-    public String getAttractionByName(@PathVariable String name, Model model) {
-        TouristAttraction attraction = touristService.getAttractionByName(name);
-        model.addAttribute("updatedAttraction", attraction);
-        return "updateSuccessful";
-    }
-
-
     @GetMapping("/{name}/edit")
     public String editAttraction(@PathVariable String name, Model model) {
         TouristAttraction touristAttraction = touristService.getAttractionByName(name);
@@ -72,15 +70,17 @@ public class TouristController {
     public String updateAttraction(Model model, @ModelAttribute TouristAttraction touristAttraction) {
         touristService.updateAttraction(touristAttraction);
         model.addAttribute("updatedAttraction", touristAttraction);
-        return "updateSuccessful";
+        return "redirect:/attractions";
     }
 
     @PostMapping("/delete/{name}")
-    public String deleteAttraction(@PathVariable String name) {
-        touristService.deleteAttraction(name);
-
-        return "redirect:/attractions"; //VIRKER IK ENDNU
+    public String deleteAttraction(@PathVariable String name, Model model) {
+        TouristAttraction deletedAttraction = touristService.deleteAttraction(name);
+        if (deletedAttraction == null) {
+            throw new IllegalArgumentException("Ugyldig attraktion");
+        }
+        model.addAttribute("deletedAttraction", deletedAttraction);
+        return "redirect:/attractions";
     }
-
-
 }
+
