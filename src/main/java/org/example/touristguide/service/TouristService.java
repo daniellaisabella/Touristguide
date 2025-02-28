@@ -22,9 +22,6 @@ public class TouristService {
         return touristRepository.getAttractionByName(name);
     }
 
-    public TouristAttraction addAttraction (TouristAttraction attraction) {
-        return touristRepository.addAttraction(attraction);
-    }
 
     public void saveAttraction (TouristAttraction attraction) {
         touristRepository.saveAttraction(attraction);

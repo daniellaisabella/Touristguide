@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + editAttraction.name : 'Tilføj Attraktion'"></title>
+    <title th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + touristAttraction.name : 'Tilføj Attraktion'"></title>
 </head>
 <body>
 <div align="center">
     <div style="border-style:solid; width:500px">
-        <h1 th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + editAttraction.name : 'Tilføj Attraktion'"></h1>
+        <h1 th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + touristAttraction.name : 'Tilføj Attraktion'"></h1>
 
         <form
                 role="form"

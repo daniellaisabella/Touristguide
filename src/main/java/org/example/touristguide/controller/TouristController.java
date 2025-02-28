@@ -58,7 +58,7 @@ public class TouristController {
     public String editAttraction(@PathVariable String name, Model model) {
         TouristAttraction touristAttraction = touristService.getAttractionByName(name);
         if (touristAttraction == null) {
-            throw new IllegalArgumentException("Ugyldig attraktion");
+            throw new IllegalArgumentException("Ugyldig attraktion"); //kan vise error html side
         }
         model.addAttribute("touristAttraction", touristAttraction);
         model.addAttribute("cities", City.values());
@@ -77,7 +77,7 @@ public class TouristController {
     public String deleteAttraction(@PathVariable String name, Model model) {
         TouristAttraction deletedAttraction = touristService.deleteAttraction(name);
         if (deletedAttraction == null) {
-            throw new IllegalArgumentException("Ugyldig attraktion");
+            throw new IllegalArgumentException("Ugyldig attraktion"); //kan vise error html side
         }
         model.addAttribute("deletedAttraction", deletedAttraction);
         return "redirect:/attractions";
