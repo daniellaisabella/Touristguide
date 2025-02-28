@@ -1,57 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Attraction Details</title>
+    <meta charset="UTF-8">
+    <title>Populære attraktioner</title>
+    <link th:href="@{/attraction-details.css}" rel="stylesheet">
 </head>
 <body>
 
-<h1>Attraction Details</h1>
+<header>
+    <h1>Attraction Details</h1>
+</header>
 
-<div th:if="${attraction}">
-  <p><strong>Name:</strong> <span th:text="${attraction.name}"></span></p>
-  <p><strong>City:</strong> <span th:text="${attraction.city}"></span></p>
-  <p><strong>Description:</strong> <span th:text="${attraction.description}"></span></p>
+<div class="container">
+    <div th:if="${attraction}">
+        <p><strong>Name:</strong> <span th:text="${attraction.name}"></span></p>
+        <p><strong>City:</strong> <span th:text="${attraction.city}"></span></p>
+        <p><strong>Description:</strong> <span th:text="${attraction.description}"></span></p>
 
-  <!-- Display Attraction Tags -->
-  <h3>Tags:</h3>
-  <ul>
-    <li th:each="tag : ${attraction.tagList}" th:text="${tag}"></li>
-  </ul>
+        <!-- Display Attraction Tags -->
+        <h3>Tags:</h3>
+        <ul>
+            <li th:each="tag : ${attraction.tagList}" th:text="${tag}"></li>
+        </ul>
 
+        <!-- Attraction Image -->
+        <img th:src="@{'/images/' + ${#strings.toLowerCase(#strings.replace(attraction.name, ' ', '-'))} + '.jpg'}"
+             th:alt="${attraction.name}"
+             onerror="this.onerror=null; this.src='/images/default.jpg';"/>
 
-  <img th:src="@{'/images/' + ${#strings.toLowerCase(#strings.replace(attraction.name, ' ', '-'))} + '.jpg'}"
-       th:alt="${attraction.name}"
-       onerror="this.onerror=null; this.src='/images/default.jpg';" />
+        <br>
 
-  <br>
+        <!-- Buttons -->
+        <a th:href="@{/attractions/{name}/edit(name=${attraction.name})}" class="btn">Redigér</a>
 
-  <!-- Edit Attraction Button -->
-  <a th:href="@{/attractions/{name}/edit(name=${attraction.name})}">
-    <button>Redigér</button>
-  </a>
+        <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post"
+              onsubmit="return confirm('Er du sikker på at du vil slette denne attraktion?');">
+            <button type="submit" class="btn btn-delete">Slet</button>
+        </form>
 
-  <!-- Delete Attraction Button with Confirmation -->
-  <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post"
-        onsubmit="return confirm('Er du sikker på at du vil slette denne attraktion?');">
-    <button type="submit">Slet</button>
-  </form>
+        <br>
 
-  <br>
+        <!-- Back to Attractions Button -->
+        <a th:href="@{/#attractions}" class="btn-large">Tilbage</a>
+    </div>
 
-  <!-- Back to Attractions Button -->
-  <a th:href="@{/#attractions}">
-    <button>Tilbage</button>
-  </a>
+    <!-- Error Message If No Attraction Found -->
+    <div th:unless="${attraction}">
+        <p>Attraktion ikke fundet.</p>
+        <a th:href="@{/#attractions}" class="btn-large">Tilbage til hovedsiden</a>
+    </div>
 </div>
 
-<!-- Error Message If No Attraction Found -->
-<div th:unless="${attraction}">
-  <p>Attraktion ikke fundet.</p>
-  <a th:href="@{/#attractions}">
-    <button>Tilbage til hovedsiden.</button>
-  </a>
-</div>
+<footer>
+    <p>&copy; 2025 Populære Attraktioner</p>
+</footer>
 
 </body>
 </html>
