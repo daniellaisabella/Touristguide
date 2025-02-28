@@ -1,0 +1,72 @@
+/* Root Variabler */
+:root {
+    --primary-color: #0073e6;
+    --secondary-color: #005bb5;
+    --light-gray: #f8f8f8;
+    --dark-gray: #333;
+    --white: #fff;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    text-align: center;
+    padding: 20px;
+}
+
+/* Header */
+h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+strong {
+    color: var(--dark-gray);
+    font-weight: bold;
+}
+
+/* Tags Styling */
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+li {
+    background: #ddd;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+}
+
+/* Button */
+button {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+}

@@ -33,6 +33,9 @@
         <!-- Buttons -->
         <a th:href="@{/attractions/{name}/edit(name=${attraction.name})}" class="btn">Redigér</a>
 
+        <br>
+        <br>
+
         <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post"
               onsubmit="return confirm('Er du sikker på at du vil slette denne attraktion?');">
             <button type="submit" class="btn btn-delete">Slet</button>

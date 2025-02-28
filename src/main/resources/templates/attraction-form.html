@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + touristAttraction.name : 'Tilføj Attraktion'"></title>
+    <link th:href="@{/attractionForm.css}" rel="stylesheet">
 </head>
 <body>
 <div align="center">
-    <div style="border-style:solid; width:500px">
+    <div>
         <h1 th:text="${touristAttraction != null and touristAttraction.name != null} ? 'Opdater ' + touristAttraction.name : 'Tilføj Attraktion'"></h1>
 
         <form
@@ -46,7 +47,7 @@
 
             <!-- Tags Selection -->
             <label>Vælg tags</label>
-            <div>
+            <div class="tags-container">
                 <th:block th:each="tag : ${tags}">
                     <input
                             type="checkbox"
