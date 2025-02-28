@@ -1,49 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<link th:href="@{/styles.css}" rel="stylesheet">
 <head>
-    <head>
-        <meta charset="UTF-8">
-        <title>Attraction List</title>
-    </head>
+    <meta charset="UTF-8">
+    <title>Attraction List</title>
+    <link th:href="@{/attractionListStyle.css}" rel="stylesheet">
+</head>
 <body>
-<h1>Liste Over alle Attraktioner</h1>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Tags</th>
-    </tr>
-    <tr th:each="attraction : ${attractions}">
-        <td th:text="${attraction.name}"></td>
-        <td th:text="${attraction.description}"></td>
-        <td>
-            <a th:href="@{/attractions/{name}/tags(name=${attraction.name})}">
-                <button type="button">Tags</button>
-            </a>
-        </td>
-        <td>
-            <a th:href="@{/attractions/{name}/edit(name=${attraction.name})}">
-                <button type="button">Rediger</button>
-            </a>
-        </td>
-        <td>
-            <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post">
-                <button type="submit">SLET</button>
-            </form>
-        </td>
 
-    </tr>
-</table>
+<header>
+    <h1>Liste over alle attraktioner</h1>
+</header>
 
-<a th:href="@{/attractions/add}">
-    <button type="button">Tilføj Attraktion</button>
-</a>
-<br>
-<br>
-<a th:href="@{/#attractions}">
-    <button type="button">Tilbage</button>
+<div class="container">
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Tags</th>
+            <th>Rediger</th>
+            <th>Slet</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="attraction : ${attractions}">
+            <td th:text="${attraction.name}"></td>
+            <td th:text="${attraction.description}"></td>
+            <td>
+                <a th:href="@{/attractions/{name}/tags(name=${attraction.name})}" class="btn">Tags</a>
+            </td>
+            <td>
+                <a th:href="@{/attractions/{name}/edit(name=${attraction.name})}" class="btn">Rediger</a>
+            </td>
+            <td>
+                <form th:action="@{/attractions/delete/{name}(name=${attraction.name})}" method="post"
+                      onsubmit="return confirm('Er du sikker på at du vil slette denne attraktion? ');">
 
-</a>
+                    <button type="submit" class="btn btn-delete">SLET</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/attractions/add}" class="btn-large">Tilføj Attraktion</a>
+    <a th:href="@{/#attractions}" class="btn-large">Tilbage</a>
+</div>
+
+<footer>
+    <p>© 2025 Attraction List</p>
+</footer>
+
 </body>
 </html>
