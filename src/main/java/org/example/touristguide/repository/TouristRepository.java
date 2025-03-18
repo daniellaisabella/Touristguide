@@ -2,122 +2,127 @@ package org.example.touristguide.repository;
 
 import org.example.touristguide.model.City;
 import org.example.touristguide.model.Tag;
-import org.springframework.stereotype.Repository;
 import org.example.touristguide.model.TouristAttraction;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 @Repository
 public class TouristRepository {
 
-    private final List<TouristAttraction> attractions = new ArrayList<>();
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
 
-    public TouristRepository() {
-        populateAttractions();
+    private final JdbcTemplate jdbcTemplate;
+
+    public TouristRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    private void populateAttractions() {
-        attractions.add(new TouristAttraction("Tivoli",
-                "En historisk forlystelsespark i hjertet af København.",
-                City.KØBENHAVN,
-                Arrays.asList(Tag.FORLYSTELSESPARK, Tag.RESTAURANT)));
-
-        attractions.add(new TouristAttraction("Den Lille Havfrue",
-                "En berømt bronzestatue inspireret af H.C. Andersens eventyr.",
-                City.KØBENHAVN,
-                Arrays.asList(Tag.ARKITEKTUR, Tag.HISTORIE)));
-
-        attractions.add(new TouristAttraction("Legoland Billund",
-                "En familievenlig forlystelsespark bygget af LEGO-klodser.",
-                City.BILLUND,
-                Arrays.asList(Tag.FORLYSTELSESPARK)));
-
-        attractions.add(new TouristAttraction("Nyhavn",
-                "Et ikonisk havnekvarter med farverige bygninger og livlige caféer.",
-                City.KØBENHAVN,
-                Arrays.asList(Tag.RESTAURANT, Tag.ARKITEKTUR)));
-
-        attractions.add(new TouristAttraction("Kronborg Slot",
-                "Shakespeares berømte Hamlet-slot, fyldt med historie og kultur.",
-                City.HELSINGØR,
-                Arrays.asList(Tag.HISTORIE, Tag.ARKITEKTUR, Tag.MUSEUM)));
-
-        attractions.add(new TouristAttraction("Møns Klint",
-                "Storslåede hvide kridtklinter med fantastisk udsigt over havet.",
-                City.MØN,
-                Arrays.asList(Tag.NATUROPLEVELSE, Tag.LANDSKAB, Tag.UDSIGTSPUNKT)));
-
-        attractions.add(new TouristAttraction("Rundetårn",
-                "Et gammelt observatorium med en unik spiralrampe og flot udsigt.",
-                City.KØBENHAVN,
-                Arrays.asList(Tag.UDSIGTSPUNKT, Tag.HISTORIE, Tag.ARKITEKTUR)));
-
-        attractions.add(new TouristAttraction("ARoS Aarhus Kunstmuseum",
-                "Et moderne kunstmuseum kendt for sin regnbuepanorama.",
-                City.AARHUS,
-                Arrays.asList(Tag.KUNST, Tag.MUSEUM)));
-
-        attractions.add(new TouristAttraction("Ribe Domkirke",
-                "Danmarks ældste domkirke i en charmerende middelalderby.",
-                City.RIBE,
-                Arrays.asList(Tag.HISTORIE, Tag.ARKITEKTUR, Tag.UDSIGTSPUNKT)));
-
-        attractions.add(new TouristAttraction("Nationalmuseet",
-                "Danmarks største kulturhistoriske museum med unikke udstillinger.",
-                City.KØBENHAVN,
-                Arrays.asList(Tag.HISTORIE, Tag.MUSEUM)));
-    }
-
+    // Retrieve all tourist attractions from the database
     public List<TouristAttraction> getAttractions() {
-        return attractions;
+        String sql = """
+                     SELECT TOURISTATTRACTION.ATTRACTION_ID, TOURISTATTRACTION.NAME, TOURISTATTRACTION.DESCRIPTION, CITY.NAME AS CITY_NAME
+                     FROM TOURISTATTRACTION
+                     JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
+                     """;
+
+        RowMapper<TouristAttraction> rowMapper = (rs, rowNum) -> new TouristAttraction(
+                rs.getString("NAME"),
+                rs.getString("DESCRIPTION"),
+                City.valueOf(rs.getString("CITY_NAME")),
+                getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
+        );
+
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
+    // Retrieve a single attraction by name
     public TouristAttraction getAttractionByName(String name) {
-        TouristAttraction current = null;
-        for (TouristAttraction attraction : attractions) {
-            if (attraction.getName().equals(name)) {
-                current = attraction;
-            }
-        }
-        return current;
+        String sql = """
+                     SELECT TOURISTATTRACTION.ATTRACTION_ID, TOURISTATTRACTION.NAME, TOURISTATTRACTION.DESCRIPTION, CITY.NAME AS CITY_NAME
+                     FROM TOURISTATTRACTION
+                     JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
+                     WHERE TOURISTATTRACTION.NAME = ?
+                     """;
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{name}, (rs, rowNum) -> new TouristAttraction(
+                rs.getString("NAME"),
+                rs.getString("DESCRIPTION"),
+                City.valueOf(rs.getString("CITY_NAME")),
+                getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
+        ));
     }
 
-    public TouristAttraction addAttraction(TouristAttraction newAttraction) {
-        attractions.add(newAttraction);
-        return newAttraction;
+    // Save attraction (Insert if not exists, Update if exists)
+    public void saveAttraction(TouristAttraction attraction) {
+        String sql = """
+                     INSERT INTO TOURISTATTRACTION (NAME, DESCRIPTION, CITY_ID)
+                     VALUES (?, ?, (SELECT CITY_ID FROM CITY WHERE NAME = ?))
+                     ON DUPLICATE KEY UPDATE
+                     DESCRIPTION = VALUES(DESCRIPTION), 
+                     CITY_ID = VALUES(CITY_ID)
+                     """;
+
+        jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity().name());
     }
 
-    public void saveAttraction (TouristAttraction newAttraction) {
-        attractions.add(newAttraction);
-    }
-
+    // Update an existing attraction
     public void updateAttraction(TouristAttraction updatedAttraction) {
-        for (int i = 0; i < attractions.size(); i++) {
-            if (updatedAttraction.getName().equals(attractions.get(i).getName())) {
-                attractions.set(i, updatedAttraction);
-            }
-        }
-        if (!attractions.contains(updatedAttraction)) {
-            attractions.add(updatedAttraction);
+        // Update the attraction's main data (description & city)
+        String sql = """
+                 UPDATE TOURISTATTRACTION
+                 SET DESCRIPTION = ?, CITY_ID = (SELECT CITY_ID FROM CITY WHERE NAME = ?)
+                 WHERE NAME = ?
+                 """;
+        jdbcTemplate.update(sql, updatedAttraction.getDescription(), updatedAttraction.getCity().name(), updatedAttraction.getName());
+
+        // Simulate object replacement: Remove old tags
+        String deleteTagsSql = """
+                           DELETE FROM ATTRACTION_TAG 
+                           WHERE ATTRACTION_ID = (SELECT ATTRACTION_ID FROM TOURISTATTRACTION WHERE NAME = ?)
+                           """;
+        jdbcTemplate.update(deleteTagsSql, updatedAttraction.getName());
+
+        // Re-add all tags (same behavior as replacing the whole object in memory)
+        String insertTagSql = """
+                          INSERT INTO ATTRACTION_TAG (ATTRACTION_ID, TAG_ID)
+                          VALUES (
+                              (SELECT ATTRACTION_ID FROM TOURISTATTRACTION WHERE NAME = ?),
+                              (SELECT TAG_ID FROM TAG WHERE NAME = ?)
+                          )
+                          """;
+        for (Tag tag : updatedAttraction.getTagList()) {
+            jdbcTemplate.update(insertTagSql, updatedAttraction.getName(), tag.name());
         }
     }
+
+    // Delete an attraction by name
     public TouristAttraction deleteAttraction(String name) {
-
-        Iterator<TouristAttraction> iterator = attractions.iterator();
-        while (iterator.hasNext()) {
-            TouristAttraction attraction = iterator.next();
-            if (attraction.getName().equalsIgnoreCase(name)) {
-                iterator.remove();
-                return attraction;
-            }
+        TouristAttraction attractionToDelete = getAttractionByName(name);
+        if (attractionToDelete != null) {
+            String sql = "DELETE FROM TOURISTATTRACTION WHERE NAME = ?";
+            jdbcTemplate.update(sql, name);
         }
-        return null;
+        return attractionToDelete;
     }
 
+    // Fetch all tags for a given attraction
+    private List<Tag> getTagsForAttraction(int attractionId) {
+        String sql = """
+                     SELECT TAG.NAME 
+                     FROM TAG
+                     JOIN ATTRACTION_TAG ON TAG.TAG_ID = ATTRACTION_TAG.TAG_ID
+                     WHERE ATTRACTION_TAG.ATTRACTION_ID = ?
+                     """;
 
+        return jdbcTemplate.query(sql, (rs, rowNum) -> Tag.valueOf(rs.getString("NAME")), attractionId);
+    }
 }
-
