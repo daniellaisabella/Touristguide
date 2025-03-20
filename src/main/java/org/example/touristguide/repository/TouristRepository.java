@@ -4,6 +4,7 @@ import org.example.touristguide.model.City;
 import org.example.touristguide.model.Tag;
 import org.example.touristguide.model.TouristAttraction;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -61,17 +62,30 @@ public class TouristRepository {
         ));
     }
 
-    // Save attraction (Insert if not exists, Update if exists)
     public void saveAttraction(TouristAttraction attraction) {
-        String sql = """
-                     INSERT INTO TOURISTATTRACTION (NAME, DESCRIPTION, CITY_ID)
-                     VALUES (?, ?, (SELECT CITY_ID FROM CITY WHERE NAME = ?))
-                     ON DUPLICATE KEY UPDATE
-                     DESCRIPTION = VALUES(DESCRIPTION), 
-                     CITY_ID = VALUES(CITY_ID)
-                     """;
+        String insertAttractionSql = """
+        INSERT INTO TOURISTATTRACTION (NAME, DESCRIPTION, CITY_ID)
+        VALUES (?, ?, (SELECT CITY_ID FROM CITY WHERE NAME = ?))
+        """;
 
-        jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity().name());
+        try {
+            jdbcTemplate.update(insertAttractionSql, attraction.getName(), attraction.getDescription(), attraction.getCity().name());
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("An attraction with the name '" + attraction.getName() + "' already exists.");
+        }
+
+        // Insert tags for the new attraction
+        String insertTagSql = """
+        INSERT INTO ATTRACTION_TAG (ATTRACTION_ID, TAG_ID)
+        VALUES (
+            (SELECT ATTRACTION_ID FROM TOURISTATTRACTION WHERE NAME = ?),
+            (SELECT TAG_ID FROM TAG WHERE NAME = ?)
+        )
+        """;
+
+        for (Tag tag : attraction.getTagList()) {
+            jdbcTemplate.update(insertTagSql, attraction.getName(), tag.name());
+        }
     }
 
     // Update an existing attraction
