@@ -77,22 +77,6 @@ header {
     background: #cc0000;
 }
 
-.btn-large {
-    display: block;
-    background: #0073e6;
-    color: white;
-    padding: 15px;
-    margin: 20px auto;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 250px;
-    transition: background 0.3s;
-}
-
 .btn-large:hover {
     background: #005bb5;
 }

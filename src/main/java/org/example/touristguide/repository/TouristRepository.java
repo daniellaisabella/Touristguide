@@ -55,14 +55,14 @@ public class TouristRepository {
     """;
 
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{name}, (rs, rowNum) -> new TouristAttraction(
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new TouristAttraction(
                     rs.getString("NAME"),
                     rs.getString("DESCRIPTION"),
                     City.valueOf(rs.getString("CITY_NAME")),
                     getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
-            ));
-        } catch (Exception e) { // Catch when attraction is not found
-            return null;
+            ), name);
+        } catch (Exception e) {
+            return null;  // Return null if not found
         }
     }
 
@@ -104,7 +104,7 @@ public class TouristRepository {
 
         // Simulate object replacement: Remove old tags
         String deleteTagsSql = """
-                           DELETE FROM ATTRACTION_TAG 
+                           DELETE FROM ATTRACTION_TAG
                            WHERE ATTRACTION_ID = (SELECT ATTRACTION_ID FROM TOURISTATTRACTION WHERE NAME = ?)
                            """;
         jdbcTemplate.update(deleteTagsSql, updatedAttraction.getName());
@@ -135,7 +135,7 @@ public class TouristRepository {
     // Fetch all tags for a given attraction
     private List<Tag> getTagsForAttraction(int attractionId) {
         String sql = """
-                     SELECT TAG.NAME 
+                     SELECT TAG.NAME
                      FROM TAG
                      JOIN ATTRACTION_TAG ON TAG.TAG_ID = ATTRACTION_TAG.TAG_ID
                      WHERE ATTRACTION_TAG.ATTRACTION_ID = ?

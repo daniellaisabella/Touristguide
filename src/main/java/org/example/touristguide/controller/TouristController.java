@@ -2,8 +2,6 @@ package org.example.touristguide.controller;
 
 import org.example.touristguide.model.City;
 import org.example.touristguide.model.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
