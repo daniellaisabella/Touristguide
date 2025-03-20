@@ -48,18 +48,22 @@ public class TouristRepository {
     // Retrieve a single attraction by name
     public TouristAttraction getAttractionByName(String name) {
         String sql = """
-                     SELECT TOURISTATTRACTION.ATTRACTION_ID, TOURISTATTRACTION.NAME, TOURISTATTRACTION.DESCRIPTION, CITY.NAME AS CITY_NAME
-                     FROM TOURISTATTRACTION
-                     JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
-                     WHERE TOURISTATTRACTION.NAME = ?
-                     """;
+        SELECT TOURISTATTRACTION.ATTRACTION_ID, TOURISTATTRACTION.NAME, TOURISTATTRACTION.DESCRIPTION, CITY.NAME AS CITY_NAME
+        FROM TOURISTATTRACTION
+        JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
+        WHERE TOURISTATTRACTION.NAME = ?
+    """;
 
-        return jdbcTemplate.queryForObject(sql, new Object[]{name}, (rs, rowNum) -> new TouristAttraction(
-                rs.getString("NAME"),
-                rs.getString("DESCRIPTION"),
-                City.valueOf(rs.getString("CITY_NAME")),
-                getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
-        ));
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{name}, (rs, rowNum) -> new TouristAttraction(
+                    rs.getString("NAME"),
+                    rs.getString("DESCRIPTION"),
+                    City.valueOf(rs.getString("CITY_NAME")),
+                    getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
+            ));
+        } catch (Exception e) { // Catch when attraction is not found
+            return null;
+        }
     }
 
     public void saveAttraction(TouristAttraction attraction) {
