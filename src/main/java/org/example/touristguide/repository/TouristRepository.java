@@ -9,17 +9,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
 public class TouristRepository {
-
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
-    @Value("${spring.datasource.username}")
-    private String username;
-    @Value("${spring.datasource.password}")
-    private String password;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -35,34 +31,51 @@ public class TouristRepository {
                      JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
                      """;
 
-        RowMapper<TouristAttraction> rowMapper = (rs, rowNum) -> new TouristAttraction(
-                rs.getString("NAME"),
-                rs.getString("DESCRIPTION"),
-                City.valueOf(rs.getString("CITY_NAME")),
-                getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
-        );
+        List<TouristAttraction> attractions = jdbcTemplate.query(sql, new TouristAttractionRowMapper());
 
-        return jdbcTemplate.query(sql, rowMapper);
+        for (TouristAttraction attraction : attractions) {
+            String tagSql = """
+                          SELECT TAG.NAME
+                          FROM TAG
+                          JOIN ATTRACTION_TAG ON TAG.TAG_ID = ATTRACTION_TAG.TAG_ID
+                          WHERE ATTRACTION_TAG.ATTRACTION_ID = (
+                              SELECT ATTRACTION_ID FROM TOURISTATTRACTION WHERE NAME = ?
+                          )
+                          """;
+            List<Tag> tags = jdbcTemplate.query(tagSql, ps -> ps.setString(1, attraction.getName()), (rs, rowNum) -> Tag.valueOf(rs.getString("NAME")));
+            attraction.setTagList(tags);
+        }
+
+        return attractions;
     }
 
     // Retrieve a single attraction by name
     public TouristAttraction getAttractionByName(String name) {
         String sql = """
-        SELECT TOURISTATTRACTION.ATTRACTION_ID, TOURISTATTRACTION.NAME, TOURISTATTRACTION.DESCRIPTION, CITY.NAME AS CITY_NAME
-        FROM TOURISTATTRACTION
-        JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
-        WHERE TOURISTATTRACTION.NAME = ?
-    """;
+                   SELECT TOURISTATTRACTION.ATTRACTION_ID, TOURISTATTRACTION.NAME, TOURISTATTRACTION.DESCRIPTION, CITY.NAME AS CITY_NAME
+                   FROM TOURISTATTRACTION
+                   JOIN CITY ON TOURISTATTRACTION.CITY_ID = CITY.CITY_ID
+                   WHERE TOURISTATTRACTION.NAME = ?
+                   """;
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new TouristAttraction(
-                    rs.getString("NAME"),
-                    rs.getString("DESCRIPTION"),
-                    City.valueOf(rs.getString("CITY_NAME")),
-                    getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
-            ), name);
+            return jdbcTemplate.query(con -> {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, name);
+                return ps;
+            }, rs -> {
+                if (rs.next()) {
+                    return new TouristAttraction(
+                        rs.getString("NAME"),
+                        rs.getString("DESCRIPTION"),
+                        City.valueOf(rs.getString("CITY_NAME")),
+                        getTagsForAttraction(rs.getInt("ATTRACTION_ID"))
+                    );
+                }
+                return null;
+            });
         } catch (Exception e) {
-            return null;  // Return null if not found
+            return null;
         }
     }
 
@@ -141,6 +154,18 @@ public class TouristRepository {
                      WHERE ATTRACTION_TAG.ATTRACTION_ID = ?
                      """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> Tag.valueOf(rs.getString("NAME")), attractionId);
+        return jdbcTemplate.query(sql, ps -> ps.setInt(1, attractionId), (rs, rowNum) -> Tag.valueOf(rs.getString("NAME")));
+    }
+
+    private static class TouristAttractionRowMapper implements RowMapper<TouristAttraction> {
+        @Override
+        public TouristAttraction mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new TouristAttraction(
+                rs.getString("NAME"),
+                rs.getString("DESCRIPTION"),
+                City.valueOf(rs.getString("CITY_NAME")),
+                null // Tags will be populated separately
+            );
+        }
     }
 }
